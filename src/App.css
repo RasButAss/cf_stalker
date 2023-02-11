@@ -1,38 +1,72 @@
+html, body {
+  background-color: #282c34;
+}
+
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  background-color: #282c34;
+  background-repeat: repeat;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: center; */
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.heading {
+  margin: 0;
+  padding: 1rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input {
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+button .submit-button {
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
+.table-body {
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+table {
+  border-spacing: 0;
+}
+
+thead tr th {
+  font-weight: 400;
+}
+
+thead {
+  background-color: #1d2026;
+}
+
+th {
+  font-weight: 100;
+  padding: 1rem;
+}
+
+tr th a {
+  text-decoration: none;
+  color: white;
+}
+
+.problem-links:hover {
+  background-color: #1d2026;
+  cursor: pointer;
+}
+
+.error-texts {
+  color: white;
 }
