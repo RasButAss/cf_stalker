@@ -3,11 +3,46 @@ import './App.css';
 import Table from './components/Table/Table';
 import Error from './components/Error/Error'
 
+const getResultArray = () => {
+  const searchResult = localStorage.getItem('data');
+  if(searchResult) {
+    return JSON.parse(searchResult);
+  } else {
+    return [];
+  }
+}
+
+const getHandle = () => {
+  const handle = localStorage.getItem('handle');
+  if(handle) {
+    return handle;
+  } else {
+    return "";
+  }
+}
+
+const getUpper = (check) => {
+  const ans = JSON.parse(localStorage.getItem('rating'));
+  if((ans[0] !== "") && (ans[1] !== "")) {
+    if(check) {
+      return Number(ans[1]);
+    } else {
+      return Number(ans[0]);
+    }
+  } else if ((ans[0] === "") || (ans[1] === "")) {
+    if(check) {
+      return 3000;
+    } else {
+      return 0;
+    }
+  }
+} 
+
 function App() {
-  const [cfHandle, setCfHandle] = useState("");
-  const [ratingLowerBound, setLowerBound] = useState(0);
-  const [ratingUpperBound, setUpperBound] = useState(3000);
-  const [resultArray, setResultArray] = useState([]);
+  const [cfHandle, setCfHandle] = useState(getHandle());
+  const [ratingLowerBound, setLowerBound] = useState(getUpper(false));
+  const [ratingUpperBound, setUpperBound] = useState(getUpper(true));
+  const [resultArray, setResultArray] = useState(getResultArray());
   const [isErr, setErr] = useState(false);
   const [count, setCount] = useState(0);
   async function getsums(handle, a, b) {
@@ -28,7 +63,7 @@ function App() {
               return false;
             }
           })
-          setResultArray(want);
+          setResultArray(want); 
         } else if (result_data.status === "FAILED") {
           setErr(true);
         }
@@ -48,17 +83,30 @@ function App() {
     if(count !== 0) {
       if(cfHandle.length !== 0) {
         setErr(false);
+        localStorage.setItem('handle', cfHandle)
+        localStorage.setItem('rating', JSON.stringify([ratingLowerBound, ratingUpperBound]))
         getsums(cfHandle, ratingLowerBound, ratingUpperBound);
       } else {
         setErr(true);
       }
     }
   },[cfHandle, ratingLowerBound, ratingUpperBound, count])
+  useEffect(() => {
+    localStorage.setItem('data', JSON.stringify(resultArray));
+  },[resultArray])
   function onSubmitHandler(e) {
     e.preventDefault();
     setCfHandle(e.target[0].value);
-    setLowerBound(e.target[1].value);
-    setUpperBound(e.target[2].value);
+    if(e.target[1].value === "") {
+      setLowerBound(0);
+    } else {
+      setLowerBound(e.target[1].value);
+    }
+    if(e.target[2].value === "") {
+      setUpperBound(3000);
+    } else {
+      setUpperBound(e.target[2].value);
+    }
     setCount(count + 1);
   }
   return (
@@ -66,9 +114,9 @@ function App() {
       <div className="App-header">
         <h1 className='heading'>CF Stalker</h1>
         <form onSubmit={onSubmitHandler} action='/'>
-          <input type='text' placeholder='Codeforces Handle' className='input'  />
-          <input type='text' placeholder='rating lower bound' className='input' />
-          <input type='text' placeholder='rating upper bound' className='input' />
+          <input type='text' placeholder='Codeforces Handle' className='input' defaultValue={cfHandle}  />
+          <input type='text' placeholder='rating lower bound' className='input' defaultValue={ratingLowerBound} />
+          <input type='text' placeholder='rating upper bound' className='input' defaultValue={ratingUpperBound} />
           <button type="submit" value="Submit" className='submit-button'>Search</button>
         </form>
       </div>
