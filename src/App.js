@@ -23,13 +23,13 @@ const getHandle = () => {
 
 const getUpper = (check) => {
   const ans = JSON.parse(localStorage.getItem('rating'));
-  if((ans[0] !== "") && (ans[1] !== "")) {
+  if(ans) {
     if(check) {
       return Number(ans[1]);
     } else {
       return Number(ans[0]);
     }
-  } else if ((ans[0] === "") || (ans[1] === "")) {
+  } else {
     if(check) {
       return 3000;
     } else {
